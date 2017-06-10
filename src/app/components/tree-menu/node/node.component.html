@@ -1,0 +1,10 @@
+<ul>
+  <li *ngFor="let item of menu">
+    {{item.id}}
+    <app-node *ngIf="item.parent" [menu]="item.parent"></app-node>
+  </li>
+</ul>
+
+
+
+
