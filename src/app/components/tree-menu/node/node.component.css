@@ -1,0 +1,23 @@
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  font-size: 18px;
+}
+
+.category {
+  margin-left: -22px;
+}
+
+.category ul {
+  margin-left: 36px;
+}
+
+.category i {
+  padding-right: 5px;
+  cursor: pointer;
+}
+
+.collapsed > app-node {
+  display: none;
+}

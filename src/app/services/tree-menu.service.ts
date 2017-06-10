@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {RequestsService} from './requests.service';
+import * as lodash from 'lodash';
 
 import { PATHS } from '../consts/path.consts';
 
@@ -28,48 +29,45 @@ export class TreeMenuService {
     });
   }
 
-  private normalizeCatalogsData(data): object[] {
-    let catalogs = {};
+  private normalizeCatalogsData(data): object {
+    let menu;
+    const menuMap = this.createMenuMap(data);
+    this.mapParent2Child(data, menuMap);
+    menu = this.finalizeMenuConfiguration(menuMap);
+    return menu;
+  }
 
-    const d = [
-      {id: 1, parent: null},
-      {id: 2, parent: null},
-      {id: 3, parent: [
-        {id: 4},
-        {id: 5},
-        {id: 6}
-      ]}
-    ];
+  private createMenuMap(data: object[]): any {
+    const menus = new Map();
 
-    const setParent = () => {
+    data.forEach((item) => {
+      menus.set(item['@id'], item);
+    });
 
-    };
+    return menus;
+  }
 
+  private mapParent2Child(data: object[], map: any): any {
+    data.forEach((item) => {
+      if (item['parent'] !== null) {
+        const parent = map.get(item['parent']['@id']);
+        if (!parent.children) {
+          parent.children = [];
+        }
+        parent.children.push(item);
+        map.set(parent['@id'], parent);
+      }
+    });
+  }
 
-
-    // const alreadyInCatalogs = (id: string) => {
-    //   return catalogs.hasOwnProperty(id);
-    // };
-    // const getParentById = (id: string) => {
-    //   return data.filter((item) => {
-    //     return item.id === id;
-    //   });
-    // };
-    // catalogs = data.reduce((acc, value) => {
-    //   if (value.hasOwnProperty('parent') && value.parent !== null) {
-    //     if (alreadyInCatalogs(value.parent.id)) {
-    //       acc[value.parent.id].children.push(value);
-    //     } else {
-    //       const parent = getParentById(value.parent.id)[0];
-    //       acc[parent.id] = Object.assign({}, parent);
-    //       acc[parent.id].children.push(value);
-    //     }
-    //   } else {
-    //     catalogs[value.id] = Object.assign({}, value);
-    //   }
-    //   return catalogs;
-    // }, data);
-    return d;
+  private finalizeMenuConfiguration(map: any): object[] {
+    const menu = [];
+    map.forEach((value, key, map) => {
+      if (value.parent === null) {
+        menu.push(value);
+      }
+    });
+    return menu;
   }
 
 }

@@ -1,7 +1,7 @@
 <ul>
-  <li *ngFor="let item of menu">
-    {{item.id}}
-    <app-node *ngIf="item.parent" [menu]="item.parent"></app-node>
+  <li *ngFor="let item of menu" [ngClass]="{'expanded': expanded, 'collapsed': !expanded, 'category': item.children}">
+    <i *ngIf="item.children" class="glyphicon" [ngClass]="{'glyphicon-minus': expanded, 'glyphicon-plus': !expanded}" (click)="toggleMenu()"></i>{{item.name}}
+    <app-node *ngIf="item.children" [menu]="item.children"></app-node>
   </li>
 </ul>
 

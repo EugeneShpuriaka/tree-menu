@@ -1,0 +1,9 @@
+.sorting {
+  margin-bottom: 18px;
+}
+
+.sorting i {
+  margin: 0 27px 0 0;
+  font-size: 18px;
+  cursor: pointer;
+}

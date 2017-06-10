@@ -8,6 +8,7 @@ import { TreeMenuService } from '../../services/tree-menu.service';
 })
 export class TreeMenuComponent implements OnInit {
   private menu: any;
+  private order: boolean;
 
   constructor(
     private menuService: TreeMenuService
@@ -23,4 +24,43 @@ export class TreeMenuComponent implements OnInit {
       });
   }
 
+  private sortMenu(order): void {
+    const menu = this.menu.slice();
+    this.order = order;
+    this.sorting(menu);
+    this.menu = menu;
+  }
+
+  private sorting(arr) {
+    arr.forEach((item) => {
+       if (item.hasOwnProperty('children')) {
+         this.sorting(item.children);
+       }
+      if (this.order) {
+        arr.sort(this.sortAsc);
+      } else {
+        arr.sort(this.sortDesc);
+      }
+    });
+  }
+
+  private sortAsc(a, b): number {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  }
+
+  private sortDesc(a, b): number {
+    if (a.name > b.name) {
+      return -1;
+    }
+    if (a.name < b.name) {
+      return 1;
+    }
+    return 0;
+  }
 }

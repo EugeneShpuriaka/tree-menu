@@ -8,9 +8,15 @@ import { Component, Input, OnInit } from '@angular/core';
 export class NodeComponent implements OnInit {
   @Input() menu: object[];
 
+  private expanded = true;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  private toggleMenu(): void {
+    this.expanded = !this.expanded;
   }
 
 }
